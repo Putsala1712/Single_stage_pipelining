@@ -1,24 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 04.02.2026 20:58:27
-// Design Name: 
-// Module Name: tb_single_stage_pipeline
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
  module tb_single_stage_pipeline();
  parameter DATA_WIDTH = 32;
@@ -53,7 +33,7 @@
   // Clock generation (10ns period)
   always #5 clk = ~clk;
 
-  // ---------------- TASKS ----------------
+  // TASKS 
 
   // Reset task
   task automatic apply_reset();
@@ -95,7 +75,7 @@
     end
   endtask
 
-  // ---------------- TEST SEQUENCE ----------------
+  // TEST SEQUENCE
 
   initial begin
     clk = 0;
@@ -105,16 +85,14 @@
     // Enable output by default
     out_ready = 1;
 
-    // ------------------------------------------------
     // Test 1: Random data without backpressure
-    // ------------------------------------------------
+    
     repeat (5) begin
       send_data($urandom);
     end
 
-    // ------------------------------------------------
     // Test 2: Random data with backpressure
-    // ------------------------------------------------
+    
     fork
       random_backpressure(20);
       begin
@@ -123,16 +101,14 @@
         end
       end
     join
-
-    // ------------------------------------------------
     // End simulation
-    // ------------------------------------------------
+ 
     #50;
     $display("[%0t] Simulation completed", $time);
     $finish;
   end
 
-  // ---------------- MONITOR ----------------
+  // MONITOR 
   always @(posedge clk) begin
     $display("[%0t] in_v=%b in_r=%b in_d=%h | out_v=%b out_r=%b out_d=%h",
               $time, in_valid, in_ready, in_data,
